@@ -8,7 +8,11 @@
 }
 
 /* Font */
-
 * {
     font-family: "Oxanium", cursive;
+}
+
+main {
+    display: inline-block;
+    margin-top: 2%;
 }
