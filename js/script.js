@@ -2,6 +2,13 @@
 
 const pokeAPIEndoint = "https://pokeapi.co/api/v2/pokemon/";
 
+const pokemonNameDOM = document.querySelector(".pokemon-name");
+
+function pokeNameRender(pokeDataFetched) {
+    let pokeName = pokeDataFetched.name
+    pokemonNameDOM.innerHTML = pokeName;
+}
+
 const fetchPokemon = async (pokemon) => {
 
     let pokemonURL = pokeAPIEndoint + pokemon;
@@ -17,12 +24,13 @@ const fetchPokemon = async (pokemon) => {
 
 // fetchPokemon(222); (i love you Corsola <3)
 
-const renderPokemon =  (pokemon) => {
+const renderPokemon = async (pokemon) => {
 
-    let pokeDataFetched =  fetchPokemon(pokemon);
-
+    let pokeDataFetched = await fetchPokemon(pokemon);
     console.log("pokeDataFetched", pokeDataFetched);
+
+    pokeNameRender(pokeDataFetched);
 
 }
 
-renderPokemon(25)
+renderPokemon(1);
