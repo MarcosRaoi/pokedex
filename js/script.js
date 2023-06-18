@@ -6,6 +6,9 @@ const pokemonNameDOM = document.querySelector(".pokemon-name");
 const pokemonIdDOM = document.querySelector(".pokemon-id");
 const pokemonImageGifDOM = document.querySelector(".pokemon-gif");
 
+const pokemonFormDOM = document.querySelector(".pokemon-form");
+const pokemonInputDOM = document.querySelector(".pokemon-input-search");
+
 function pokeNameRender(pokeDataFetched) {
     let pokeName = pokeDataFetched.name;
     pokemonNameDOM.innerHTML = pokeName;
@@ -72,3 +75,16 @@ const renderPokemon = async (pokemon) => {
 // Render first pokémon <3 luv ya bulbasaurO, but char >>>>>>> is better
 // renderPokemon(1);
 renderPokemon("Bulbasaur");
+
+const pokeForm = (event) => {
+    event.preventDefault();
+    let pokeInputValue = pokemonInputDOM.value;
+
+    renderPokemon(pokeInputValue);
+
+    console.log("Poké Form!!!");
+    // console.log("pokeInputValue", pokemonInputDOM.value);
+    console.log("pokeInputValue", pokeInputValue);
+}
+
+pokemonFormDOM.addEventListener("submit", pokeForm);
