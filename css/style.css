@@ -22,9 +22,20 @@ main {
     display: inline-block;
     margin-top: 2%;
     padding: 15px;
+    position: relative;
 }
 
 .pokedex {
     width: 100%;
     max-width: 425px;
+}
+
+.pokemon-gif {
+    position: absolute;
+    left: 50%;
+    bottom: 55%;
+
+    transform: translate(-63%, 20%);
+
+    height: 18%;
 }
