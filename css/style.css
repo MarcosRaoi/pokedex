@@ -45,4 +45,11 @@ main {
     top: 54.5%;
     right: 27%;
 
+    font-weight: 600;
+    color: #aaa;
+}
+
+.pokemon-name {
+    color: #5f4a4a;
+    text-transform: capitalize;
 }
