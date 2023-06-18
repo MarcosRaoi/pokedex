@@ -12,6 +12,12 @@
     font-family: "Oxanium", cursive;
 }
 
+body {
+    text-align: center;
+    background: linear-gradient(to bottom, #76bbf3, #fff);
+    min-height: 100vh;
+}
+
 main {
     display: inline-block;
     margin-top: 2%;
