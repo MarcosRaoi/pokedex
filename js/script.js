@@ -12,6 +12,17 @@ const fetchPokemon = async (pokemon) => {
     console.log("pokeAPIResponse", pokeAPIResponse);
     console.log("pokeData", pokeData);
 
+    return pokeData;
 }
 
-fetchPokemon(222);
+// fetchPokemon(222); (i love you Corsola <3)
+
+const renderPokemon =  (pokemon) => {
+
+    let pokeDataFetched =  fetchPokemon(pokemon);
+
+    console.log("pokeDataFetched", pokeDataFetched);
+
+}
+
+renderPokemon(25)
