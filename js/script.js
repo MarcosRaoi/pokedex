@@ -12,6 +12,9 @@ const pokemonImageGifDOM = document.querySelector(".pokemon-gif");
 const pokemonFormDOM = document.querySelector(".pokemon-form");
 const pokemonInputDOM = document.querySelector(".pokemon-input-search");
 
+const pokeButtonPrev = document.querySelector(".button-prev");
+const pokeButtonNext = document.querySelector(".button-next");
+
 function pokeNameRender(pokeDataFetched) {
     let pokeName = pokeDataFetched.name;
     pokemonNameDOM.innerHTML = pokeName;
@@ -74,7 +77,7 @@ function loadingPokeDataFetch() {
 
 function getMissingNo() {
     //pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"]
-    let fakePokeSprites = {"versions": {"generation-v":{"black-white":{"animated":{"front_default": pokeMissingNo}}}}}
+    let fakePokeSprites = { "versions": { "generation-v": { "black-white": { "animated": { "front_default": pokeMissingNo } } } } }
     let fakePokeData = {
         "id": "???",
         "name": "Not found :(",
@@ -137,3 +140,14 @@ const pokeForm = (event) => {
 }
 
 pokemonFormDOM.addEventListener("submit", pokeForm);
+
+const pokePrev = () => {
+    console.log("Poke Prev!");
+}
+
+const pokeNext = () => {
+    console.log("Poke Next!");
+}
+
+pokeButtonPrev.addEventListener("click", pokePrev);
+pokeButtonNext.addEventListener("click", pokeNext);
