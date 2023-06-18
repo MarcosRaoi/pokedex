@@ -47,6 +47,8 @@ main {
 
     font-weight: 600;
     color: #aaa;
+
+    font-size: clamp(8px, 5vw, 27px);
 }
 
 .pokemon-name {
