@@ -76,6 +76,9 @@ main {
     padding: 4%;
     border: 2px solid;
     border-radius: 5px;
+
+    /* Mobile responsivity font-size */
+    font-size: clamp(8px, 5vw, 1rem);
 }
 
 .pokemon-input-search {
@@ -87,9 +90,6 @@ main {
     box-shadow:
         -3px 4px 0 #888,
         -5px 7px 0 #333;
-
-    /* Mobile responsivity font-size */
-    font-size: clamp(8px, 5vw, 1rem);
 }
 
 .pokemon-buttons {
@@ -110,4 +110,9 @@ main {
 
     color: white;
     background-color: #444;
+
+    /* Effect border pokedex display image */
+    box-shadow:
+        -2px 3px 0 #222,
+        -4px 6px 0 #000;
 }
