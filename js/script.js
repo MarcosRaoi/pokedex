@@ -20,6 +20,13 @@ function pokeIdRender(pokeDataFetched) {
     console.log("pokeId", pokeId);
 }
 
+function pokeImgGifRender(pokeDataFetched) {
+    // let pokeGif = ;
+    pokemonImageGifDOM.innerHTML = pokeGif;
+
+    console.log("pokeGif", pokeGif);
+}
+
 const fetchPokemon = async (pokemon) => {
 
     let pokemonURL = pokeAPIEndoint + pokemon.toLowerCase();
