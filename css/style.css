@@ -48,6 +48,7 @@ main {
     font-weight: 600;
     color: #aaa;
 
+    /* Mobile responsivity font-size */
     font-size: clamp(8px, 5vw, 27px);
 }
 
@@ -81,5 +82,13 @@ main {
         -3px 4px 0 #888,
         -5px 7px 0 #333;
 
+    /* Mobile responsivity font-size */
     font-size: clamp(8px, 5vw, 1rem);
+}
+
+.pokemon-buttons {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+
 }
