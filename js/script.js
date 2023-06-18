@@ -47,6 +47,28 @@ function pokeImgGifRender(pokeDataFetched) {
     console.log("pokeGif", pokeGif);
 }
 
+function resetPokeInput() {
+    pokemonNameDOM.innerHTML = "Loading...";
+    pokemonInputDOM.value = "";
+}
+
+function hidePokeSeparator() {
+    let pokeSeparatorDOM = document.querySelector(".poke-separator");
+    pokeSeparatorDOM.innerHTML = "";
+}
+
+function showPokeSeparator() {
+    let pokeSeparatorDOM = document.querySelector(".poke-separator");
+    pokeSeparatorDOM.innerHTML = "-";
+}
+
+function loadingPokeDataFetch() {
+    hidePokeSeparator();
+    pokemonImageGifDOM.src = "./images/spinning-loading.gif";
+    pokemonNameDOM.innerHTML = "Loading...";
+    pokemonIdDOM.innerHTML = "";
+}
+
 const fetchPokemon = async (pokemon) => {
 
     let pokemonURL = pokeAPIEndoint + pokemon.toLowerCase();
@@ -63,13 +85,17 @@ const fetchPokemon = async (pokemon) => {
 // fetchPokemon(222); (i love you Corsola <3)
 
 const renderPokemon = async (pokemon) => {
+    loadingPokeDataFetch();
 
     let pokeDataFetched = await fetchPokemon(pokemon);
     console.log("pokeDataFetched", pokeDataFetched);
 
+    //http status code 200;
     pokeNameRender(pokeDataFetched);
     pokeIdRender(pokeDataFetched);
     pokeImgGifRender(pokeDataFetched);
+    showPokeSeparator();
+
 }
 
 // Render first pokémon <3 luv ya bulbasaurO, but char >>>>>>> is better
@@ -81,6 +107,7 @@ const pokeForm = (event) => {
     let pokeInputValue = pokemonInputDOM.value;
 
     renderPokemon(pokeInputValue);
+    resetPokeInput();
 
     console.log("Poké Form!!!");
     // console.log("pokeInputValue", pokemonInputDOM.value);
