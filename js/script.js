@@ -2,6 +2,9 @@
 
 const pokeAPIEndoint = "https://pokeapi.co/api/v2/pokemon/";
 
+const pokeLoading = "./images/spinning-loading.gif";
+const pokeMissingNo = "./images/missingno.gif";
+
 const pokemonNameDOM = document.querySelector(".pokemon-name");
 const pokemonIdDOM = document.querySelector(".pokemon-id");
 const pokemonImageGifDOM = document.querySelector(".pokemon-gif");
@@ -64,22 +67,43 @@ function showPokeSeparator() {
 
 function loadingPokeDataFetch() {
     hidePokeSeparator();
-    pokemonImageGifDOM.src = "./images/spinning-loading.gif";
+    pokemonImageGifDOM.src = pokeLoading;
     pokemonNameDOM.innerHTML = "Loading...";
     pokemonIdDOM.innerHTML = "";
+}
+
+function getMissingNo() {
+    //pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"]
+    let fakePokeSprites = {"versions": {"generation-v":{"black-white":{"animated":{"front_default": pokeMissingNo}}}}}
+    let fakePokeData = {
+        "id": "???",
+        "name": "Not found :(",
+        "sprites": fakePokeSprites,
+    }
+    return fakePokeData;
 }
 
 const fetchPokemon = async (pokemon) => {
 
     let pokemonURL = pokeAPIEndoint + pokemon.toLowerCase();
     const pokeAPIResponse = await fetch(pokemonURL);
-    const pokeData = await pokeAPIResponse.json();
 
     console.log("pokemonURL", pokemonURL);
     console.log("pokeAPIResponse", pokeAPIResponse);
-    console.log("pokeData", pokeData);
 
-    return pokeData;
+    if (pokeAPIResponse.status == 200) {
+        const pokeData = await pokeAPIResponse.json();
+        console.log("pokeData", pokeData);
+
+        return pokeData;
+
+    } else {
+        let fakePokeData = getMissingNo();
+        console.log("fakePokeData", fakePokeData);
+        hidePokeSeparator();
+
+        return fakePokeData;
+    };
 }
 
 // fetchPokemon(222); (i love you Corsola <3)
@@ -90,12 +114,10 @@ const renderPokemon = async (pokemon) => {
     let pokeDataFetched = await fetchPokemon(pokemon);
     console.log("pokeDataFetched", pokeDataFetched);
 
-    //http status code 200;
     pokeNameRender(pokeDataFetched);
     pokeIdRender(pokeDataFetched);
     pokeImgGifRender(pokeDataFetched);
     showPokeSeparator();
-
 }
 
 // Render first pokémon <3 luv ya bulbasaurO, but char >>>>>>> is better
