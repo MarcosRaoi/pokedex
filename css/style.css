@@ -32,10 +32,17 @@ main {
 
 .pokemon-gif {
     position: absolute;
-    left: 50%;
     bottom: 55%;
+    left: 50%;
 
     transform: translate(-63%, 20%);
 
     height: 18%;
+}
+
+.pokemon-data {
+    position: absolute;
+    top: 54.5%;
+    right: 27%;
+
 }
