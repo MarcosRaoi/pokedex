@@ -21,4 +21,9 @@ body {
 main {
     display: inline-block;
     margin-top: 2%;
+    padding: 15px;
+}
+
+.pokedex {
+    width: 100%;
 }
