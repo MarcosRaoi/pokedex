@@ -13,16 +13,33 @@ function pokeNameRender(pokeDataFetched) {
     console.log("pokeName", pokeName);
 }
 
+function formatPokeId(pokeId) {
+    let pokeLocale = "pt-BR";
+    let pokeMinimumDigits = 3;
+    let pokeFormatOptions = {
+        minimumIntegerDigits: pokeMinimumDigits,
+        useGrouping: false,
+    };
+    let pokeFormattedPokeId = pokeId.toLocaleString(pokeLocale, pokeFormatOptions);
+
+    console.log("pokeFormattedPokeId", pokeFormattedPokeId);
+    return pokeFormattedPokeId;
+}
+
 function pokeIdRender(pokeDataFetched) {
     let pokeId = pokeDataFetched.id;
-    pokemonIdDOM.innerHTML = pokeId;
+    let pokeFormattedId = formatPokeId(pokeId);
+
+    // pokemonIdDOM.innerHTML = pokeId;
+    pokemonIdDOM.innerHTML = pokeFormattedId;
 
     console.log("pokeId", pokeId);
+    console.log("pokeFormattedId", pokeFormattedId);
 }
 
 function pokeImgGifRender(pokeDataFetched) {
-    // let pokeGif = ;
-    pokemonImageGifDOM.innerHTML = pokeGif;
+    let pokeGif = pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"];
+    pokemonImageGifDOM.src = pokeGif;
 
     console.log("pokeGif", pokeGif);
 }
@@ -49,7 +66,7 @@ const renderPokemon = async (pokemon) => {
 
     pokeNameRender(pokeDataFetched);
     pokeIdRender(pokeDataFetched);
-
+    pokeImgGifRender(pokeDataFetched);
 }
 
 // Render first pokémon <3 luv ya bulbasaurO, but char >>>>>>> is better
