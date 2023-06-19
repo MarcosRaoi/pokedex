@@ -1,6 +1,10 @@
 // Using PokeAPI (https://pokeapi.co/)
 
+const DEFAULT_MAX_POKEMONS = 1010;
+const DEFAULT_FIRST_POKEMON_ID = 1;
+
 const pokeAPIEndoint = "https://pokeapi.co/api/v2/pokemon/";
+const nationalPokedexAPIEndoint = "https://pokeapi.co/api/v2/pokedex/1/";
 
 const pokeLoading = "./images/spinning-loading.gif";
 const pokeMissingNo = "./images/missingno.gif";
@@ -15,6 +19,30 @@ const pokemonInputDOM = document.querySelector(".pokemon-input-search");
 const pokeButtonPrev = document.querySelector(".button-prev");
 const pokeButtonNext = document.querySelector(".button-next");
 
+let searchPokemonId = DEFAULT_FIRST_POKEMON_ID;
+let maxSearchPokemonId = DEFAULT_FIRST_POKEMON_ID;
+
+const setMaxSearchPokemonId = async () => {
+
+    const pokedexAPIResponse = await fetch(nationalPokedexAPIEndoint);
+
+    console.log("nationalPokedexAPIEndoint", nationalPokedexAPIEndoint);
+    console.log("pokedexAPIResponse", pokedexAPIResponse);
+
+    if (pokedexAPIResponse.status == 200) {
+        const pokedexData = await pokedexAPIResponse.json();
+        let maxPokemonCount = pokedexData.pokemon_entries.length;
+        console.log("pokedexData", pokedexData);
+        console.log("maxPokemonCount", maxPokemonCount);
+
+        maxSearchPokemonId = maxPokemonCount;
+    } else {
+        maxSearchPokemonId = DEFAULT_MAX_POKEMONS;
+    };
+}
+
+setMaxSearchPokemonId();
+
 function pokeNameRender(pokeDataFetched) {
     let pokeName = pokeDataFetched.name;
     pokemonNameDOM.innerHTML = pokeName;
@@ -24,14 +52,13 @@ function pokeNameRender(pokeDataFetched) {
 
 function formatPokeId(pokeId) {
     let pokeLocale = "pt-BR";
-    let pokeMinimumDigits = 3;
+    let pokeMinimumDigits = 4;
     let pokeFormatOptions = {
         minimumIntegerDigits: pokeMinimumDigits,
         useGrouping: false,
     };
     let pokeFormattedPokeId = pokeId.toLocaleString(pokeLocale, pokeFormatOptions);
 
-    console.log("pokeFormattedPokeId", pokeFormattedPokeId);
     return pokeFormattedPokeId;
 }
 
@@ -48,6 +75,14 @@ function pokeIdRender(pokeDataFetched) {
 
 function pokeImgGifRender(pokeDataFetched) {
     let pokeGif = pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"];
+
+    // After #0649, #0650 Chespin doesn't have a gif animation,
+    // Because it's not from Pokémon Black and White games (generation V),
+    // Chespin is from Pokémon X and Y,
+    // #0650 ~ #1010 not supported,
+    if (pokeGif == null) {
+        pokeGif = pokeDataFetched.sprites.front_default;
+    }
     pokemonImageGifDOM.src = pokeGif;
 
     console.log("pokeGif", pokeGif);
@@ -76,8 +111,8 @@ function loadingPokeDataFetch() {
 }
 
 function getMissingNo() {
-    //pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"]
-    let fakePokeSprites = { "versions": { "generation-v": { "black-white": { "animated": { "front_default": pokeMissingNo } } } } }
+    // pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"]
+    let fakePokeSprites = { "versions": { "generation-v": { "black-white": { "animated": { "front_default": pokeMissingNo } } } } };
     let fakePokeData = {
         "id": "???",
         "name": "Not found :(",
@@ -86,9 +121,19 @@ function getMissingNo() {
     return fakePokeData;
 }
 
+function handleSucceededPokeFetch(pokeData) {
+    searchPokemonId = pokeData.id;
+}
+
+function handleUnsucceededPokeFetch() {
+    searchPokemonId = 0;
+    hidePokeSeparator();
+}
+
 const fetchPokemon = async (pokemon) => {
 
-    let pokemonURL = pokeAPIEndoint + pokemon.toLowerCase();
+    let pokeString = pokemon.toString();
+    let pokemonURL = pokeAPIEndoint + pokeString.toLowerCase();
     const pokeAPIResponse = await fetch(pokemonURL);
 
     console.log("pokemonURL", pokemonURL);
@@ -97,13 +142,14 @@ const fetchPokemon = async (pokemon) => {
     if (pokeAPIResponse.status == 200) {
         const pokeData = await pokeAPIResponse.json();
         console.log("pokeData", pokeData);
+        handleSucceededPokeFetch(pokeData);
 
         return pokeData;
 
     } else {
         let fakePokeData = getMissingNo();
         console.log("fakePokeData", fakePokeData);
-        hidePokeSeparator();
+        handleUnsucceededPokeFetch();
 
         return fakePokeData;
     };
@@ -115,7 +161,6 @@ const renderPokemon = async (pokemon) => {
     loadingPokeDataFetch();
 
     let pokeDataFetched = await fetchPokemon(pokemon);
-    console.log("pokeDataFetched", pokeDataFetched);
 
     pokeNameRender(pokeDataFetched);
     pokeIdRender(pokeDataFetched);
@@ -141,12 +186,29 @@ const pokeForm = (event) => {
 
 pokemonFormDOM.addEventListener("submit", pokeForm);
 
+function clampSearchPokemonId() {
+    if (searchPokemonId <= 0) {
+        searchPokemonId = maxSearchPokemonId;
+    }
+
+    if (searchPokemonId > maxSearchPokemonId) {
+        searchPokemonId = DEFAULT_FIRST_POKEMON_ID;
+    }
+}
+
+function pokeButton() {
+    clampSearchPokemonId();
+    renderPokemon(searchPokemonId);
+}
+
 const pokePrev = () => {
-    console.log("Poke Prev!");
+    searchPokemonId -= 1;
+    pokeButton();
 }
 
 const pokeNext = () => {
-    console.log("Poke Next!");
+    searchPokemonId += 1;
+    pokeButton();
 }
 
 pokeButtonPrev.addEventListener("click", pokePrev);
