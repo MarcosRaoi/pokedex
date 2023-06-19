@@ -75,6 +75,8 @@ function pokeIdRender(pokeDataFetched) {
 
 function pokeImgGifRender(pokeDataFetched) {
     let pokeGif = pokeDataFetched["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"];
+    // pokeGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${searchPokemonId}.gif`;
+    // why API dont show other.showdown T-T;
 
     // After #0649, #0650 Chespin doesn't have a gif animation,
     // Because it's not from Pokémon Black and White games (generation V),
@@ -184,8 +186,6 @@ const pokeForm = (event) => {
     console.log("pokeInputValue", pokeInputValue);
 }
 
-pokemonFormDOM.addEventListener("submit", pokeForm);
-
 function clampSearchPokemonId() {
     if (searchPokemonId <= 0) {
         searchPokemonId = maxSearchPokemonId;
@@ -210,6 +210,8 @@ const pokeNext = () => {
     searchPokemonId += 1;
     pokeButton();
 }
+
+pokemonFormDOM.addEventListener("submit", pokeForm);
 
 pokeButtonPrev.addEventListener("click", pokePrev);
 pokeButtonNext.addEventListener("click", pokeNext);
